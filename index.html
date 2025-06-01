@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
-    <meta http-equiv="refresh" content="3; url=home/index.html">
+    <meta http-equiv="refresh" content="0; url=home/index.html">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -36,7 +36,29 @@
 <body>
     <div class="message">
         <p>You are being redirected to another page...</p>
-        <p>If you are not redirected automatically, <a href="home/index.html">click here</a>.</p>
+        <p>If you are not redirected automatically, <a id="fallbackLink" href="home/index.html">click here</a>.</p>
     </div>
+
+    <script>
+        // backup JavaScript redirect incase the meta tag fails to redirect 
+        const targetUrl = 'home/index.html';
+        const delay = 100;
+        // Use setTimeout to perform the redirect after the delay
+        setTimeout(function() {
+            // Check if the current URL is already the target URL.
+            // This prevents unnecessary redirects if the meta tag already worked.
+            if (window.location.href !== targetUrl && window.location.pathname !== targetUrl) {
+                window.location.replace(targetUrl); 
+            }
+        }, delay);
+
+        // Optional: Ensure the manual link also uses the same target URL incase the meta fails and JavaScript delays
+        document.addEventListener('DOMContentLoaded', function() {
+            const fallbackLink = document.getElementById('fallbackLink');
+            if (fallbackLink) {
+                fallbackLink.href = targetUrl;
+            }
+        });
+    </script>
 </body>
 </html>
